@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime, timedelta, timezone
 from math import ceil
 
@@ -106,4 +108,3 @@ class LoanService:
     def overdue(self, now: datetime | None = None) -> list[Loan]:
         current = now or datetime.now(timezone.utc)
         return list(self.db.scalars(select(Loan).where(Loan.returned_at.is_(None), Loan.due_at < current).order_by(Loan.due_at)).all())
-
